@@ -1,11 +1,16 @@
 /* global localStorage */
 import RSVP from 'rsvp';
 
-import { bind } from '@ember/runloop';
+import {
+  bind
+} from '@ember/runloop';
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
-
+import {
+  parse,
+  stringify
+} from 'flatted';
 /**
   Session store that persists data in the browser's `localStorage`.
 
@@ -63,7 +68,7 @@ export default BaseStore.extend({
   */
   persist(data) {
     this._lastData = data;
-    data = JSON.stringify(data || {});
+    data = JSON.stringify(stringify(data) || {});
     localStorage.setItem(this.key, data);
 
     return RSVP.resolve();
@@ -79,7 +84,7 @@ export default BaseStore.extend({
   restore() {
     let data = localStorage.getItem(this.key);
 
-    return RSVP.resolve(JSON.parse(data) || {});
+    return RSVP.resolve(JSON.parse(parse(data) || {}));
   },
 
   /**
