@@ -7,10 +7,7 @@ import {
 import BaseStore from './base';
 import objectsAreEqual from '../utils/objects-are-equal';
 import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
-import {
-  parse,
-  stringify
-} from 'flatted/cjs';
+import CircularJSON from 'circular-json';
 /**
   Session store that persists data in the browser's `localStorage`.
 
@@ -68,7 +65,7 @@ export default BaseStore.extend({
   */
   persist(data) {
     this._lastData = data;
-    data = JSON.stringify(stringify(data) || {});
+    data = CircularJSON.stringify(data) || {};
     localStorage.setItem(this.key, data);
 
     return RSVP.resolve();
@@ -84,7 +81,7 @@ export default BaseStore.extend({
   restore() {
     let data = localStorage.getItem(this.key);
 
-    return RSVP.resolve(JSON.parse(parse(data) || {}));
+    return RSVP.resolve(CircularJSON.parse(data) || {});
   },
 
   /**
