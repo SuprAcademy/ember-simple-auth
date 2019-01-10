@@ -10,7 +10,7 @@ import isFastBoot from 'ember-simple-auth/utils/is-fastboot';
 import {
   parse,
   stringify
-} from 'flatted/esm';
+} from 'flatted/cjs';
 /**
   Session store that persists data in the browser's `localStorage`.
 
